@@ -3,7 +3,7 @@
 
 #define CHUNK 16384
 
-namespace sl_client
+namespace libgzip
 {
 
 	GZipOutputStream::GZipOutputStream()

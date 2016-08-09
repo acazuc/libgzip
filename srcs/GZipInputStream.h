@@ -3,9 +3,9 @@
 
 # include <cstdint>
 # include <cstdio>
-# include "zlib.h"
+# include <zlib.h>
 
-namespace sl_client
+namespace libgzip
 {
 
 	class GZipInputStream
