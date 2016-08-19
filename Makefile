@@ -28,7 +28,7 @@ $(NAME): $(OBJS)
 
 $(OBJS_PATH)%.opp: $(SRCS_PATH)%.cpp
 	@echo " - Compiling $<"
-	@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDE_PATH)
+	@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDES_PATH)
 
 odir:
 	@mkdir -p $(OBJS_PATH)
