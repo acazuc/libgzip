@@ -1,5 +1,5 @@
-#ifndef GZIP_OUTPUT_STREAM_H
-# define GZIP_OUTPUT_STREAM_H
+#ifndef LIBGZIP_OUTPUT_STREAM_H
+# define LIBGZIP_OUTPUT_STREAM_H
 
 # include <cstdint>
 # include <cstdio>

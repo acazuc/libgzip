@@ -1,5 +1,5 @@
-#ifndef GZIP_INPUT_STREAM
-# define GZIP_INPUT_STREAM
+#ifndef LIBGZIP_INPUT_STREAM
+# define LIBGZIP_INPUT_STREAM
 
 # include <cstdint>
 # include <cstdio>
