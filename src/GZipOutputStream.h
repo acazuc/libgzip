@@ -25,7 +25,7 @@ namespace libgzip
 		~GZipOutputStream();
 		bool open(std::string filename);
 		void close();
-		ssize_t write(void *data, ssize_t len);
+		ssize_t write(const void *data, ssize_t len);
 		bool writeInt8(int8_t val);
 		bool writeUInt8(uint8_t val);
 		bool writeInt16(int16_t val);

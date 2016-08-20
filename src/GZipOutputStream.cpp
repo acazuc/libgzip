@@ -65,7 +65,7 @@ namespace libgzip
 		}
 	}
 
-	ssize_t GZipOutputStream::write(void *data, ssize_t len)
+	ssize_t GZipOutputStream::write(const void *data, ssize_t len)
 	{
 		ssize_t written;
 		ssize_t tmp;
@@ -74,7 +74,8 @@ namespace libgzip
 		if (!this->opened || !this->file)
 			return (-1);
 		written = 0;
-		do {
+		do
+		{
 			this->stream.avail_in = len - written;
 			this->stream.next_in = (Bytef*)data + written;
 			this->stream.avail_out = CHUNK;

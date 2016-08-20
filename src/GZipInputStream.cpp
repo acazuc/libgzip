@@ -26,11 +26,14 @@ namespace libgzip
 	{
 		if (this->opened || this->file)
 			return (false);
-		memset(&this->stream, 0, sizeof(this->stream));
+		std::memset(&this->stream, 0, sizeof(this->stream));
 		if (inflateInit2(&this->stream, 16 + MAX_WBITS) != Z_OK)
 			return (false);
 		if (!(this->file = fopen(filename.c_str(), "rb")))
+		{
+			inflateEnd(&this->stream);
 			return (false);
+		}
 		this->opened = true;
 		return (true);
 	}
@@ -61,13 +64,13 @@ namespace libgzip
 		{
 			if (this->bufferLen > 0 && this->bufferOff > 0)
 			{
-				memmove(this->buffer, this->buffer + this->bufferOff, this->bufferLen);
+				std::memmove(this->buffer, this->buffer + this->bufferOff, this->bufferLen);
 				this->bufferOff = 0;
 			}
-			readed = fread(this->buffer + this->bufferLen, 1, CHUNK - this->bufferLen, this->file);
+			readed = std::fread(this->buffer + this->bufferLen, 1, CHUNK - this->bufferLen, this->file);
 			this->bufferLen += readed;
 			this->stream.avail_in = this->bufferLen;
-			if (ferror(this->file))
+			if (std::ferror(this->file))
 			{
 				written = -1;
 				break;
