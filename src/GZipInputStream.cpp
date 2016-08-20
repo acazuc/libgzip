@@ -18,7 +18,7 @@ namespace libgzip
 	GZipInputStream::~GZipInputStream()
 	{
 		if (this->buffer)
-			delete[] this->buffer;
+			delete[] (this->buffer);
 		close();
 	}
 
@@ -29,7 +29,7 @@ namespace libgzip
 		std::memset(&this->stream, 0, sizeof(this->stream));
 		if (inflateInit2(&this->stream, 16 + MAX_WBITS) != Z_OK)
 			return (false);
-		if (!(this->file = fopen(filename.c_str(), "rb")))
+		if (!(this->file = std::fopen(filename.c_str(), "rb")))
 		{
 			inflateEnd(&this->stream);
 			return (false);
@@ -42,7 +42,7 @@ namespace libgzip
 	{
 		if (this->file)
 		{
-			fclose(this->file);
+			std::fclose(this->file);
 			this->file = NULL;
 		}
 		if (this->opened)

@@ -18,7 +18,7 @@ namespace libgzip
 	GZipOutputStream::~GZipOutputStream()
 	{
 		if (this->buffer)
-			delete[] this->buffer;
+			delete[] (this->buffer);
 		close();
 	}
 
@@ -26,10 +26,10 @@ namespace libgzip
 	{
 		if (this->file || this->opened)
 			return (false);
-		memset(&this->stream, 0, sizeof(this->stream));
+		std::memset(&this->stream, 0, sizeof(this->stream));
 		if (deflateInit2(&this->stream, 1, Z_DEFLATED, 16 | 15, 8, Z_DEFAULT_STRATEGY) != Z_OK)
 			return (false);
-		if (!(this->file = fopen(filename.c_str(), "wb")))
+		if (!(this->file = std::fopen(filename.c_str(), "wb")))
 			return (false);
 		this->opened = true;
 		return (true);
@@ -60,7 +60,7 @@ namespace libgzip
 		}
 		if (this->file)
 		{
-			fclose(this->file);
+			std::fclose(this->file);
 			this->file = NULL;
 		}
 	}
@@ -86,7 +86,7 @@ namespace libgzip
 				break;
 			}
 			this->bufferLen = CHUNK - this->stream.avail_out;
-			if ((tmp = fwrite(this->buffer, 1, this->bufferLen, this->file)) != this->bufferLen)
+			if ((tmp = std::fwrite(this->buffer, 1, this->bufferLen, this->file)) != this->bufferLen)
 			{
 				written = -1;
 				break;
