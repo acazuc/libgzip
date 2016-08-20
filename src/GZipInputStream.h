@@ -3,6 +3,7 @@
 
 # include <cstdint>
 # include <cstdio>
+# include <string>
 # include <zlib.h>
 
 namespace libgzip
@@ -22,7 +23,7 @@ namespace libgzip
 	public:
 		GZipInputStream();
 		~GZipInputStream();
-		bool open(char *file);
+		bool open(std::string filename);
 		void close();
 		ssize_t read(void *data, size_t len);
 		bool readInt8(int8_t *val);

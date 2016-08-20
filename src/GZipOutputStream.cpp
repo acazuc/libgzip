@@ -22,19 +22,15 @@ namespace libgzip
 		close();
 	}
 
-	bool GZipOutputStream::open(char *filename)
+	bool GZipOutputStream::open(std::string filename)
 	{
 		if (this->file || this->opened)
 			return (false);
-		if (!(this->file = fopen(filename, "wb")))
-			return (false);
 		memset(&this->stream, 0, sizeof(this->stream));
 		if (deflateInit2(&this->stream, 1, Z_DEFLATED, 16 | 15, 8, Z_DEFAULT_STRATEGY) != Z_OK)
-		{
-			fclose(file);
-			this->file = NULL;
 			return (false);
-		}
+		if (!(this->file = fopen(filename.c_str(), "wb")))
+			return (false);
 		this->opened = true;
 		return (true);
 	}
