@@ -6,13 +6,13 @@ ARCH = -m64
 
 AR = ar
 
-ARFLAGS = 
+ARFLAGS =
 
 RANLIB = ranlib
 
-RANLIBFLAGS = 
+RANLIBFLAGS =
 
-CLFAGS = -Wall -Wextra -Werror -Ofast -pipe -mtune=generic -flto=8
+CLFAGS = -g -Wall -Wextra -Werror -Ofast -pipe -mtune=generic -funroll-loops -flto=8
 
 INCLUDES_PATH = -I src
 INCLUDES_PATH+= -I lib/zlib
@@ -20,7 +20,7 @@ INCLUDES_PATH+= -I lib/zlib
 SRCS_PATH = src/
 
 SRCS_NAME = GZipInputStream.cpp \
-			GZipOutputStream.cpp
+		GZipOutputStream.cpp
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 
