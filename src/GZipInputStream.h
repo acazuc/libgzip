@@ -13,10 +13,10 @@ namespace libgzip
 	{
 
 	private:
-		unsigned char *buffer;
+		uint32_t bufferOff;
+		uint32_t bufferLen;
+		uint8_t *buffer;
 		bool opened;
-		int bufferOff;
-		int bufferLen;
 		z_stream stream;
 		FILE *file;
 

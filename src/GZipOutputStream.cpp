@@ -7,12 +7,12 @@ namespace libgzip
 {
 
 	GZipOutputStream::GZipOutputStream()
+	: bufferOff(0)
+	, bufferLen(0)
+	, file(NULL)
+	, opened(false)
 	{
-		this->buffer = new unsigned char[CHUNK];
-		this->bufferOff = 0;
-		this->bufferLen = 0;
-		this->file = NULL;
-		this->opened = false;
+		this->buffer = new uint8_t[CHUNK];
 	}
 
 	GZipOutputStream::~GZipOutputStream()
