@@ -10,6 +10,7 @@ namespace libgzip
 	: bufferOff(0)
 	, bufferLen(0)
 	, file(NULL)
+	, openedFile(false)
 	, opened(false)
 	{
 		this->buffer = new uint8_t[CHUNK];
@@ -30,7 +31,23 @@ namespace libgzip
 		if (deflateInit2(&this->stream, 1, Z_DEFLATED, 16 | 15, 8, Z_DEFAULT_STRATEGY) != Z_OK)
 			return (false);
 		if (!(this->file = std::fopen(filename.c_str(), "wb")))
+		{
+			deflateEnd(&this->stream);
 			return (false);
+		}
+		this->opened = true;
+		this->openedFile = true;
+		return (true);
+	}
+
+	bool GZipOutputStream::open(FILE *file)
+	{
+		if (this->file || this->opened)
+			return (false);
+		std::memset(&this->stream, 0, sizeof(this->stream));
+		if (deflateInit2(&this->stream, 1, Z_DEFLATED, 16 | 15, 8, Z_DEFAULT_STRATEGY) != Z_OK)
+			return (false);
+		this->file = file;
 		this->opened = true;
 		return (true);
 	}
@@ -50,7 +67,7 @@ namespace libgzip
 				if ((ret = deflate(&this->stream, Z_FULL_FLUSH)) != Z_OK && ret != Z_FINISH)
 					break;
 				this->bufferLen = CHUNK - this->stream.avail_out;
-				if ((tmp = fwrite(this->buffer, 1, this->bufferLen, this->file)) != this->bufferLen)
+				if ((tmp = std::fwrite(this->buffer, 1, this->bufferLen, this->file)) != this->bufferLen)
 					break;
 				if (ret == Z_FINISH)
 					break;
@@ -58,7 +75,7 @@ namespace libgzip
 			deflateEnd(&this->stream);
 			this->opened = false;
 		}
-		if (this->file)
+		if (this->openedFile)
 		{
 			std::fclose(this->file);
 			this->file = NULL;

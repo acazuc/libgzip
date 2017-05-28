@@ -16,6 +16,7 @@ namespace libgzip
 		uint32_t bufferOff;
 		uint32_t bufferLen;
 		uint8_t *buffer;
+		bool openedFile;
 		bool opened;
 		z_stream stream;
 		FILE *file;
@@ -24,6 +25,7 @@ namespace libgzip
 		GZipOutputStream();
 		~GZipOutputStream();
 		bool open(std::string filename);
+		bool open(FILE *file);
 		void close();
 		ssize_t write(const void *data, ssize_t len);
 		bool writeInt8(int8_t val);

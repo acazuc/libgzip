@@ -9,6 +9,7 @@ namespace libgzip
 	GZipInputStream::GZipInputStream()
 	: bufferOff(0)
 	, bufferLen(0)
+	, openedFile(false)
 	, opened(false)
 	, file(NULL)
 	{
@@ -35,12 +36,26 @@ namespace libgzip
 			return (false);
 		}
 		this->opened = true;
+		this->openedFile = true;
+		return (true);
+	}
+
+	bool GZipInputStream::open(FILE *file)
+	{
+		if (this->opened || this->file)
+			return (false);
+		std::memset(&this->stream, 0, sizeof(this->stream));
+		if (inflateInit2(&this->stream, 16 + MAX_WBITS) != Z_OK)
+			return (false);
+		this->file = file;
+		this->opened = true;
+		this->openedFile = true;
 		return (true);
 	}
 
 	void GZipInputStream::close()
 	{
-		if (this->file)
+		if (this->openedFile)
 		{
 			std::fclose(this->file);
 			this->file = NULL;
@@ -70,6 +85,8 @@ namespace libgzip
 			readed = std::fread(this->buffer + this->bufferLen, 1, CHUNK - this->bufferLen, this->file);
 			this->bufferLen += readed;
 			this->stream.avail_in = this->bufferLen;
+			if (std::feof(this->file))
+				break;
 			if (std::ferror(this->file))
 			{
 				written = -1;
