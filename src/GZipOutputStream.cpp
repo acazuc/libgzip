@@ -75,7 +75,7 @@ namespace libgzip
 			deflateEnd(&this->stream);
 			this->opened = false;
 		}
-		if (this->openedFile)
+		if (this->openedFile && this->file)
 		{
 			std::fclose(this->file);
 			this->file = NULL;

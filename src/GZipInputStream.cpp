@@ -55,9 +55,10 @@ namespace libgzip
 
 	void GZipInputStream::close()
 	{
-		if (this->openedFile)
+		if (this->openedFile && this->file)
 		{
 			std::fclose(this->file);
+			this->openedFile = false;
 			this->file = NULL;
 		}
 		if (this->opened)
@@ -83,10 +84,12 @@ namespace libgzip
 				this->bufferOff = 0;
 			}
 			readed = std::fread(this->buffer + this->bufferLen, 1, CHUNK - this->bufferLen, this->file);
+			if (readed == (size_t)-1 && std::feof(this->file))
+			{
+				break;
+			}
 			this->bufferLen += readed;
 			this->stream.avail_in = this->bufferLen;
-			if (std::feof(this->file))
-				break;
 			if (std::ferror(this->file))
 			{
 				written = -1;
