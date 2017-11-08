@@ -71,9 +71,7 @@ namespace libgzip
 	ssize_t GZipInputStream::read(void *data, size_t len)
 	{
 		size_t written = 0;
-		size_t readed = 0;
 		int ret;
-
 		if (!this->opened || !this->file)
 			return (-1);
 		do
@@ -83,7 +81,7 @@ namespace libgzip
 				std::memmove(this->buffer, this->buffer + this->bufferOff, this->bufferLen);
 				this->bufferOff = 0;
 			}
-			readed = std::fread(this->buffer + this->bufferLen, 1, CHUNK - this->bufferLen, this->file);
+			size_t readed = std::fread(this->buffer + this->bufferLen, 1, CHUNK - this->bufferLen, this->file);
 			if (readed == (size_t)-1 && std::feof(this->file))
 			{
 				break;

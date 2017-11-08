@@ -1,3 +1,4 @@
 libgzip.a
 *.swp
 obj
+*.gch

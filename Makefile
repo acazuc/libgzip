@@ -12,7 +12,7 @@ RANLIB = gcc-ranlib
 
 RANLIBFLAGS =
 
-CLFAGS = -g -Wall -Wextra -Werror -Ofast -pipe -mtune=generic -fuse-linker-plugin -flto=8
+CLFAGS = -g -Wall -Wextra -Werror -O2 -pipe -mtune=generic -fuse-linker-plugin -flto
 
 INCLUDES_PATH = -I src
 INCLUDES_PATH+= -I lib/zlib
@@ -20,7 +20,7 @@ INCLUDES_PATH+= -I lib/zlib
 SRCS_PATH = src/
 
 SRCS_NAME = GZipInputStream.cpp \
-		GZipOutputStream.cpp
+	    GZipOutputStream.cpp
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 
@@ -31,6 +31,10 @@ OBJS_NAME = $(SRCS_NAME:.cpp=.opp)
 OBJS = $(addprefix $(OBJS_PATH), $(OBJS_NAME))
 
 all: odir $(NAME)
+
+headers:
+	@find $(SRCS_PATH) -name \*.gch -exec rm {} \;
+	@find $(SRCS_PATH) -name \*.h -exec $(CC) {} \;
 
 $(NAME): $(OBJS)
 	@echo " - Making $(NAME)"
