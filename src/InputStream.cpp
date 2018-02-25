@@ -21,7 +21,6 @@ namespace gz
 	ssize_t InputStream::read(void *data, size_t len)
 	{
 		size_t written = 0;
-		int ret;
 		do
 		{
 			if (this->bufferLen > 0 && this->bufferOff > 0)
@@ -31,26 +30,19 @@ namespace gz
 			}
 			ssize_t readed = readBytes(this->buffer + this->bufferLen, CHUNK - this->bufferLen);
 			if (readed == -1 && eof())
-			{
 				break;
-			}
 			this->bufferLen += readed;
 			this->stream.avail_in = this->bufferLen;
 			if (readed == -1)
-			{
-				written = -1;
-				break;
-			}
+				return (-1);
 			if (this->stream.avail_in == 0)
 				break;
 			this->stream.next_in = this->buffer;
 			this->stream.avail_out = len - written;
 			this->stream.next_out = (Bytef*)data + written;
-			if ((ret = inflate(&this->stream, Z_NO_FLUSH)) != Z_OK && ret != Z_FINISH)
-			{
-				written = -1;
-				break;
-			}
+			int ret = inflate(&this->stream, Z_NO_FLUSH);
+			if (ret != Z_OK && ret != Z_FINISH)
+				return (-1);
 			this->bufferOff = this->bufferLen - this->stream.avail_in;
 			written = len - this->stream.avail_out;
 			this->bufferLen = this->stream.avail_in;

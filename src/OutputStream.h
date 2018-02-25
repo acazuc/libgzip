@@ -23,6 +23,7 @@ namespace gz
 		OutputStream();
 		~OutputStream();
 		ssize_t write(const void *data, size_t len);
+		bool flush();
 		bool writeInt8(int8_t val);
 		bool writeUInt8(uint8_t val);
 		bool writeInt16(int16_t val);

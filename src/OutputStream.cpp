@@ -29,20 +29,33 @@ namespace gz
 			this->stream.next_out = this->buffer;
 			int ret = deflate(&this->stream, Z_NO_FLUSH);
 			if (ret != Z_OK && ret != Z_FINISH)
-			{
-				written = -1;
-				break;
-			}
+				return (-1);
 			this->bufferLen = CHUNK - this->stream.avail_out;
 			ssize_t tmp = writeBytes(this->buffer, this->bufferLen);
 			if (tmp != this->bufferLen)
-			{
-				written = -1;
-				break;
-			}
+				return (-1);
 			written += len - written - this->stream.avail_in;
 		} while (written != len);
-		return (written);
+		return (len);
+	}
+
+	bool OutputStream::flush()
+	{
+begin:
+		this->stream.avail_in = 0;
+		this->stream.next_in = (Bytef*)0;
+		this->stream.avail_out = CHUNK;
+		this->stream.next_out = this->buffer;
+		int ret = deflate(&this->stream, Z_FINISH);
+		if (ret != Z_STREAM_END)
+			return (false);
+		this->bufferLen = CHUNK - this->stream.avail_out;
+		ssize_t tmp = writeBytes(this->buffer, this->bufferLen);
+		if (tmp != this->bufferLen)
+			return (false);
+		if (ret == Z_STREAM_END)
+			return (true);
+		goto begin;
 	}
 
 	bool OutputStream::writeInt8(int8_t val)

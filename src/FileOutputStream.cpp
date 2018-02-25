@@ -78,7 +78,7 @@ namespace gz
 		}
 	}
 
-	ssize_t FileOutputStream::writeBytes(const void *data, ssize_t len)
+	ssize_t FileOutputStream::writeBytes(const void *data, size_t len)
 	{
 		if (!this->opened || !this->file)
 			return (-1);

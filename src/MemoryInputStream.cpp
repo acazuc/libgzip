@@ -9,12 +9,14 @@ namespace gz
 	, pos(0)
 	, data(data)
 	{
-		//Empty
+		std::memset(&this->stream, 0, sizeof(this->stream));
+		if (inflateInit2(&this->stream, 16 + MAX_WBITS) != Z_OK)
+			throw std::exception();
 	}
 
 	MemoryInputStream::~MemoryInputStream()
 	{
-		//Empty
+		inflateEnd(&this->stream);
 	}
 
 	ssize_t MemoryInputStream::readBytes(void *data, size_t len)

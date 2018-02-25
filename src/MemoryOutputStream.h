@@ -14,7 +14,7 @@ namespace gz
 
 	private:
 		std::vector<uint8_t> data;
-		ssize_t writeBytes(const void *data, ssize_t len);
+		ssize_t writeBytes(const void *data, size_t len);
 
 	public:
 		MemoryOutputStream();
