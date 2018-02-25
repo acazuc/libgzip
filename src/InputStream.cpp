@@ -29,8 +29,13 @@ namespace gz
 				this->bufferOff = 0;
 			}
 			ssize_t readed = readBytes(this->buffer + this->bufferLen, CHUNK - this->bufferLen);
-			if (readed == -1 && eof())
-				break;
+			if (readed <= 0)
+			{
+				if (!eof())
+					return (-1);
+				else if (this->bufferLen == 0)
+					return (0);
+			}
 			this->bufferLen += readed;
 			this->stream.avail_in = this->bufferLen;
 			if (readed == -1)
@@ -41,11 +46,13 @@ namespace gz
 			this->stream.avail_out = len - written;
 			this->stream.next_out = (Bytef*)data + written;
 			int ret = inflate(&this->stream, Z_NO_FLUSH);
-			if (ret != Z_OK && ret != Z_FINISH)
+			if (ret != Z_OK && ret != Z_FINISH && ret != Z_STREAM_END)
 				return (-1);
 			this->bufferOff = this->bufferLen - this->stream.avail_in;
 			written = len - this->stream.avail_out;
 			this->bufferLen = this->stream.avail_in;
+			if (ret == Z_STREAM_END)
+				break;
 		} while (written < len);
 		return (written);
 	}

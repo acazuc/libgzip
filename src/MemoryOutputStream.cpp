@@ -9,7 +9,7 @@ namespace gz
 	MemoryOutputStream::MemoryOutputStream()
 	{
 		std::memset(&this->stream, 0, sizeof(this->stream));
-		if (deflateInit2(&this->stream, 1, Z_DEFLATED, 16 | 15, 9, Z_DEFAULT_STRATEGY) != Z_OK)
+		if (deflateInit(&this->stream, 1) != Z_OK)
 			throw std::exception();
 	}
 

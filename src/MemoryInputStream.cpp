@@ -10,7 +10,7 @@ namespace gz
 	, data(data)
 	{
 		std::memset(&this->stream, 0, sizeof(this->stream));
-		if (inflateInit2(&this->stream, 16 + MAX_WBITS) != Z_OK)
+		if (inflateInit(&this->stream) != Z_OK)
 			throw std::exception();
 	}
 
@@ -23,6 +23,7 @@ namespace gz
 	{
 		ssize_t readed = std::min(this->len - this->pos, len);
 		std::memmove(data, (uint8_t*)this->data + this->pos, readed);
+		this->pos += readed;
 		return (readed);
 	}
 
