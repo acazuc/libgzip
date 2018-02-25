@@ -22,7 +22,7 @@ namespace gz
 		if (this->opened || this->file)
 			return (false);
 		std::memset(&this->stream, 0, sizeof(this->stream));
-		if (inflateInit2(&this->stream, 16 + MAX_WBITS) != Z_OK)
+		if (inflateInit(&this->stream) != Z_OK)
 			return (false);
 		if (!(this->file = std::fopen(filename.c_str(), "rb")))
 		{
@@ -39,7 +39,7 @@ namespace gz
 		if (this->opened || this->file)
 			return (false);
 		std::memset(&this->stream, 0, sizeof(this->stream));
-		if (inflateInit2(&this->stream, 16 + MAX_WBITS) != Z_OK)
+		if (inflateInit(&this->stream) != Z_OK)
 			return (false);
 		this->file = file;
 		this->opened = true;

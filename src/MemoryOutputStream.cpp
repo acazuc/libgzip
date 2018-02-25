@@ -6,10 +6,10 @@
 namespace gz
 {
 
-	MemoryOutputStream::MemoryOutputStream()
+	MemoryOutputStream::MemoryOutputStream(uint8_t level)
 	{
 		std::memset(&this->stream, 0, sizeof(this->stream));
-		if (deflateInit(&this->stream, 1) != Z_OK)
+		if (deflateInit(&this->stream, level) != Z_OK)
 			throw std::exception();
 	}
 

@@ -19,12 +19,12 @@ namespace gz
 		close();
 	}
 
-	bool FileOutputStream::open(std::string filename)
+	bool FileOutputStream::open(std::string filename, uint8_t level)
 	{
 		if (this->file || this->opened)
 			return (false);
 		std::memset(&this->stream, 0, sizeof(this->stream));
-		if (deflateInit2(&this->stream, 1, Z_DEFLATED, 16 | 15, 9, Z_DEFAULT_STRATEGY) != Z_OK)
+		if (deflateInit(&this->stream, level) != Z_OK)
 			return (false);
 		if (!(this->file = std::fopen(filename.c_str(), "wb")))
 		{
@@ -36,12 +36,12 @@ namespace gz
 		return (true);
 	}
 
-	bool FileOutputStream::open(FILE *file)
+	bool FileOutputStream::open(FILE *file, uint8_t level)
 	{
 		if (this->file || this->opened)
 			return (false);
 		std::memset(&this->stream, 0, sizeof(this->stream));
-		if (deflateInit2(&this->stream, 1, Z_DEFLATED, 16 | 15, 9, Z_DEFAULT_STRATEGY) != Z_OK)
+		if (deflateInit(&this->stream, level) != Z_OK)
 			return (false);
 		this->file = file;
 		this->opened = true;

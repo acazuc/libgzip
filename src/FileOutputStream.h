@@ -21,8 +21,8 @@ namespace gz
 	public:
 		FileOutputStream();
 		~FileOutputStream();
-		bool open(std::string filename);
-		bool open(FILE *file);
+		bool open(std::string filename, uint8_t level = 6);
+		bool open(FILE *file, uint8_t level = 6);
 		void close();
 
 	};
