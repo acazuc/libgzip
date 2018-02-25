@@ -1,32 +1,27 @@
-#ifndef LIBGZIP_INPUT_STREAM
-# define LIBGZIP_INPUT_STREAM
+#ifndef GZ_INPUT_STREAM
+# define GZ_INPUT_STREAM
 
 # include <cstdint>
 # include <cstdio>
-# include <string>
 # include <zlib.h>
 
-namespace libgzip
+namespace gz
 {
 
-	class GZipInputStream
+	class InputStream
 	{
 
-	private:
+	protected:
 		uint32_t bufferOff;
 		uint32_t bufferLen;
 		uint8_t *buffer;
-		bool openedFile;
-		bool opened;
 		z_stream stream;
-		FILE *file;
+		virtual ssize_t readBytes(void *data, size_t len) {(void)data;(void)len;return (0);};
+		virtual bool eof() {return (true);};
 
 	public:
-		GZipInputStream();
-		~GZipInputStream();
-		bool open(std::string filename);
-		bool open(FILE *file);
-		void close();
+		InputStream();
+		~InputStream();
 		ssize_t read(void *data, size_t len);
 		bool readInt8(int8_t *val);
 		bool readUInt8(uint8_t *val);

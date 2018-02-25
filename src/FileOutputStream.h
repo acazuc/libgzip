@@ -1,0 +1,32 @@
+#ifndef GZ_FILE_OUTPUT_STREAM_H
+# define GZ_FILE_OUTPUT_STREAM_H
+
+# include "./OutputStream.h"
+# include <cstdint>
+# include <cstdio>
+# include <string>
+
+namespace gz
+{
+
+	class FileOutputStream : public OutputStream
+	{
+
+	private:
+		bool openedFile;
+		bool opened;
+		FILE *file;
+		ssize_t writeBytes(const void *data, ssize_t len);
+
+	public:
+		FileOutputStream();
+		~FileOutputStream();
+		bool open(std::string filename);
+		bool open(FILE *file);
+		void close();
+
+	};
+
+}
+
+#endif

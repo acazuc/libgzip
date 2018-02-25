@@ -12,15 +12,19 @@ RANLIB = gcc-ranlib
 
 RANLIBFLAGS =
 
-CLFAGS = -g -Wall -Wextra -Werror -O2 -pipe -mtune=generic -fuse-linker-plugin -flto
+CLFAGS = -g -Wall -Wextra -Werror -O3 -pipe -mtune=generic -fuse-linker-plugin -flto
 
 INCLUDES_PATH = -I src
-INCLUDES_PATH+= -I lib/zlib
+INCLUDES_PATH+= -I lib/zlib/include
 
 SRCS_PATH = src/
 
-SRCS_NAME = GZipInputStream.cpp \
-	    GZipOutputStream.cpp
+SRCS_NAME = InputStream.cpp \
+	    OutputStream.cpp \
+	    FileInputStream.cpp \
+	    FileOutputStream.cpp \
+	    MemoryInputStream.cpp \
+	    MemoryOutputStream.cpp \
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 
