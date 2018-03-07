@@ -17,7 +17,6 @@ namespace gz
 		uint8_t *buffer;
 		z_stream stream;
 		virtual ssize_t readBytes(void *data, size_t len) {(void)data;(void)len;return (0);};
-		virtual bool eof() {return (true);};
 
 	public:
 		InputStream();
@@ -31,6 +30,7 @@ namespace gz
 		bool readUInt32(uint32_t *val);
 		bool readInt64(int64_t *val);
 		bool readUInt64(uint64_t *val);
+		virtual bool eof() {return (true);};
 
 	};
 

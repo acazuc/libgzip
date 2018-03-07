@@ -34,12 +34,10 @@ namespace gz
 				if (!eof())
 					return (-1);
 				else if (this->bufferLen == 0)
-					return (0);
+					break;
 			}
 			this->bufferLen += readed;
 			this->stream.avail_in = this->bufferLen;
-			if (readed == -1)
-				return (-1);
 			if (this->stream.avail_in == 0)
 				break;
 			this->stream.next_in = this->buffer;

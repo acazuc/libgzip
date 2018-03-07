@@ -17,7 +17,6 @@ namespace gz
 		bool opened;
 		FILE *file;
 		ssize_t readBytes(void *data, size_t len);
-		bool eof();
 
 	public:
 		FileInputStream();
@@ -25,6 +24,7 @@ namespace gz
 		bool open(std::string filename);
 		bool open(FILE *file);
 		void close();
+		bool eof();
 
 	};
 

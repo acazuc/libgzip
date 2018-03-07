@@ -16,11 +16,11 @@ namespace gz
 		size_t pos;
 		void *data;
 		ssize_t readBytes(void *data, size_t len);
-		bool eof();
 
 	public:
 		MemoryInputStream(void *data, size_t len);
 		~MemoryInputStream();
+		bool eof();
 
 	};
 

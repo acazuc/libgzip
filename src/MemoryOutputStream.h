@@ -17,7 +17,7 @@ namespace gz
 		ssize_t writeBytes(const void *data, size_t len);
 
 	public:
-		MemoryOutputStream(uint8_t level);
+		MemoryOutputStream(uint8_t level = 6);
 		~MemoryOutputStream();
 		std::vector<uint8_t> &getData() {return (this->data);};
 
