@@ -1,8 +1,8 @@
 NAME = libgzip.a
 
-CC = g++ -std=c++14
+CC = g++
 
-ARCH = -m64
+ARCH =
 
 AR = gcc-ar
 
@@ -12,7 +12,7 @@ RANLIB = gcc-ranlib
 
 RANLIBFLAGS =
 
-CLFAGS = -g -Wall -Wextra -Werror -O3 -pipe -mtune=generic -fuse-linker-plugin -flto
+CLFAGS = -std=c++14 -g -Wall -Wextra -Werror -O3 -pipe
 
 INCLUDES_PATH = -I src
 INCLUDES_PATH+= -I lib/zlib/include
