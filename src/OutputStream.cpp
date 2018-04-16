@@ -10,12 +10,12 @@ namespace gz
 	: bufferOff(0)
 	, bufferLen(0)
 	{
-		this->buffer = new uint8_t[CHUNK];
+		this->buffer.resize(CHUNK);
 	}
 
 	OutputStream::~OutputStream()
 	{
-		delete[] (this->buffer);
+		//Empty
 	}
 
 	ssize_t OutputStream::write(const void *data, size_t len)
@@ -25,16 +25,15 @@ namespace gz
 		{
 			this->stream.avail_in = len - written;
 			this->stream.next_in = (Bytef*)data + written;
-			this->stream.avail_out = CHUNK;
-			this->stream.next_out = this->buffer;
+			this->stream.avail_out = this->buffer.size();
+			this->stream.next_out = this->buffer.data();
 			int ret = deflate(&this->stream, Z_NO_FLUSH);
 			if (ret != Z_OK && ret != Z_FINISH)
 				return (-1);
-			this->bufferLen = CHUNK - this->stream.avail_out;
-			ssize_t tmp = writeBytes(this->buffer, this->bufferLen);
-			if (tmp != this->bufferLen)
+			this->bufferLen = this->buffer.size() - this->stream.avail_out;
+			if (writeBytes(this->buffer.data(), this->bufferLen) != this->bufferLen)
 				return (-1);
-			written += len - written - this->stream.avail_in;
+			written = len - this->stream.avail_in;
 		} while (written != len);
 		return (len);
 	}
@@ -45,12 +44,12 @@ begin:
 		this->stream.avail_in = 0;
 		this->stream.next_in = (Bytef*)0;
 		this->stream.avail_out = CHUNK;
-		this->stream.next_out = this->buffer;
+		this->stream.next_out = this->buffer.data();
 		int ret = deflate(&this->stream, Z_FINISH);
 		if (ret != Z_STREAM_END)
 			return (false);
-		this->bufferLen = CHUNK - this->stream.avail_out;
-		ssize_t tmp = writeBytes(this->buffer, this->bufferLen);
+		this->bufferLen = this->buffer.size() - this->stream.avail_out;
+		ssize_t tmp = writeBytes(this->buffer.data(), this->bufferLen);
 		if (tmp != this->bufferLen)
 			return (false);
 		if (ret == Z_STREAM_END)

@@ -10,12 +10,12 @@ namespace gz
 	: bufferOff(0)
 	, bufferLen(0)
 	{
-		this->buffer = new uint8_t[CHUNK];
+		this->buffer.resize(CHUNK);
 	}
 
 	InputStream::~InputStream()
 	{
-		delete[] (this->buffer);
+		//Empty
 	}
 
 	ssize_t InputStream::read(void *data, size_t len)
@@ -25,22 +25,22 @@ namespace gz
 		{
 			if (this->bufferLen > 0 && this->bufferOff > 0)
 			{
-				std::memmove(this->buffer, this->buffer + this->bufferOff, this->bufferLen);
+				std::memmove(this->buffer.data(), this->buffer.data() + this->bufferOff, this->bufferLen);
 				this->bufferOff = 0;
 			}
-			ssize_t readed = readBytes(this->buffer + this->bufferLen, CHUNK - this->bufferLen);
+			ssize_t readed = readBytes(this->buffer.data() + this->bufferLen, this->buffer.size() - this->bufferLen);
 			if (readed <= 0)
 			{
 				if (!eof())
 					return (-1);
-				else if (this->bufferLen == 0)
+				if (this->bufferLen == 0)
 					break;
 			}
 			this->bufferLen += readed;
 			this->stream.avail_in = this->bufferLen;
 			if (this->stream.avail_in == 0)
 				break;
-			this->stream.next_in = this->buffer;
+			this->stream.next_in = this->buffer.data();
 			this->stream.avail_out = len - written;
 			this->stream.next_out = (Bytef*)data + written;
 			int ret = inflate(&this->stream, Z_NO_FLUSH);

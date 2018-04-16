@@ -45,6 +45,7 @@ namespace gz
 			return (false);
 		this->file = file;
 		this->opened = true;
+		this->openedFile = false;
 		return (true);
 	}
 
@@ -52,18 +53,17 @@ namespace gz
 	{
 		if (this->opened)
 		{
-			int ret;
-			ssize_t tmp;
 			do
 			{
 				this->stream.avail_in = 0;
 				this->stream.next_in = (Bytef*)0;
-				this->stream.avail_out = CHUNK;
-				this->stream.next_out = this->buffer;
-				if ((ret = deflate(&this->stream, Z_FULL_FLUSH)) != Z_OK && ret != Z_FINISH)
+				this->stream.avail_out = this->buffer.size();
+				this->stream.next_out = this->buffer.data();
+				int ret = deflate(&this->stream, Z_FULL_FLUSH);
+				if (ret != Z_OK && ret != Z_FINISH)
 					break;
-				this->bufferLen = CHUNK - this->stream.avail_out;
-				if ((tmp = std::fwrite(this->buffer, 1, this->bufferLen, this->file)) != this->bufferLen)
+				this->bufferLen = this->buffer.size() - this->stream.avail_out;
+				if (writeBytes(this->buffer.data(), this->bufferLen) != this->bufferLen)
 					break;
 				if (ret == Z_FINISH)
 					break;

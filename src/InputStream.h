@@ -3,6 +3,7 @@
 
 # include <cstdint>
 # include <cstdio>
+# include <vector>
 # include <zlib.h>
 
 namespace gz
@@ -12,9 +13,9 @@ namespace gz
 	{
 
 	protected:
+		std::vector<uint8_t> buffer;
 		uint32_t bufferOff;
 		uint32_t bufferLen;
-		uint8_t *buffer;
 		z_stream stream;
 		virtual ssize_t readBytes(void *data, size_t len) {(void)data;(void)len;return (0);};
 
