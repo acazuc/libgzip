@@ -22,31 +22,31 @@ namespace gz
 	bool FileOutputStream::open(std::string filename, uint8_t level)
 	{
 		if (this->file || this->opened)
-			return (false);
+			return false;
 		std::memset(&this->stream, 0, sizeof(this->stream));
 		if (deflateInit(&this->stream, level) != Z_OK)
-			return (false);
+			return false;
 		if (!(this->file = std::fopen(filename.c_str(), "wb")))
 		{
 			deflateEnd(&this->stream);
-			return (false);
+			return false;
 		}
 		this->opened = true;
 		this->openedFile = true;
-		return (true);
+		return true;
 	}
 
 	bool FileOutputStream::open(FILE *file, uint8_t level)
 	{
 		if (this->file || this->opened)
-			return (false);
+			return false;
 		std::memset(&this->stream, 0, sizeof(this->stream));
 		if (deflateInit(&this->stream, level) != Z_OK)
-			return (false);
+			return false;
 		this->file = file;
 		this->opened = true;
 		this->openedFile = false;
-		return (true);
+		return true;
 	}
 
 	void FileOutputStream::close()
@@ -81,8 +81,8 @@ namespace gz
 	ssize_t FileOutputStream::writeBytes(const void *data, size_t len)
 	{
 		if (!this->opened || !this->file)
-			return (-1);
-		return (std::fwrite(data, 1, len, this->file));
+			return -1;
+		return std::fwrite(data, 1, len, this->file);
 	}
 
 }

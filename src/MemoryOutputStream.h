@@ -19,7 +19,7 @@ namespace gz
 	public:
 		MemoryOutputStream(uint8_t level = 6);
 		~MemoryOutputStream();
-		std::vector<uint8_t> &getData() {return (this->data);};
+		std::vector<uint8_t> &getData() {return this->data;};
 
 	};
 

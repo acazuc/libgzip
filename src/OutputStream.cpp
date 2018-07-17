@@ -29,13 +29,13 @@ namespace gz
 			this->stream.next_out = this->buffer.data();
 			int ret = deflate(&this->stream, Z_NO_FLUSH);
 			if (ret != Z_OK && ret != Z_FINISH)
-				return (-1);
+				return -1;
 			this->bufferLen = this->buffer.size() - this->stream.avail_out;
 			if (writeBytes(this->buffer.data(), this->bufferLen) != this->bufferLen)
-				return (-1);
+				return -1;
 			written = len - this->stream.avail_in;
 		} while (written != len);
-		return (len);
+		return len;
 	}
 
 	bool OutputStream::flush()
@@ -47,54 +47,54 @@ begin:
 		this->stream.next_out = this->buffer.data();
 		int ret = deflate(&this->stream, Z_FINISH);
 		if (ret != Z_STREAM_END)
-			return (false);
+			return false;
 		this->bufferLen = this->buffer.size() - this->stream.avail_out;
 		ssize_t tmp = writeBytes(this->buffer.data(), this->bufferLen);
 		if (tmp != this->bufferLen)
-			return (false);
+			return false;
 		if (ret == Z_STREAM_END)
-			return (true);
+			return true;
 		goto begin;
 	}
 
 	bool OutputStream::writeInt8(int8_t val)
 	{
-		return (write(&val, 1) == 1);
+		return write(&val, 1) == 1;
 	}
 
 	bool OutputStream::writeUInt8(uint8_t val)
 	{
-		return (write(&val, 1) == 1);
+		return write(&val, 1) == 1;
 	}
 
 	bool OutputStream::writeInt16(int16_t val)
 	{
-		return (write(&val, 2) == 2);
+		return write(&val, 2) == 2;
 	}
 
 	bool OutputStream::writeUInt16(uint16_t val)
 	{
-		return (write(&val, 2) == 2);
+		return write(&val, 2) == 2;
 	}
 
 	bool OutputStream::writeInt32(int32_t val)
 	{
-		return (write(&val, 4) == 4);
+		return write(&val, 4) == 4;
 	}
 
 	bool OutputStream::writeUInt32(uint32_t val)
 	{
-		return (write(&val, 4) == 4);
+		return write(&val, 4) == 4;
 	}
 
 	bool OutputStream::writeInt64(int64_t val)
 	{
-		return (write(&val, 8) == 8);
+		return write(&val, 8) == 8;
 	}
 
 	bool OutputStream::writeUInt64(uint64_t val)
 	{
-		return (write(&val, 8) == 8);
+		return write(&val, 8) == 8;
 	}
 
 }

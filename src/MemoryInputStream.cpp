@@ -24,12 +24,12 @@ namespace gz
 		ssize_t readed = std::min(this->len - this->pos, len);
 		std::memmove(data, (uint8_t*)this->data + this->pos, readed);
 		this->pos += readed;
-		return (readed);
+		return readed;
 	}
 
 	bool MemoryInputStream::eof()
 	{
-		return (this->pos == this->len);
+		return this->pos == this->len;
 	}
 
 }

@@ -20,31 +20,31 @@ namespace gz
 	bool FileInputStream::open(std::string filename)
 	{
 		if (this->opened || this->file)
-			return (false);
+			return false;
 		std::memset(&this->stream, 0, sizeof(this->stream));
 		if (inflateInit(&this->stream) != Z_OK)
-			return (false);
+			return false;
 		if (!(this->file = std::fopen(filename.c_str(), "rb")))
 		{
 			inflateEnd(&this->stream);
-			return (false);
+			return false;
 		}
 		this->opened = true;
 		this->openedFile = true;
-		return (true);
+		return true;
 	}
 
 	bool FileInputStream::open(FILE *file)
 	{
 		if (this->opened || this->file)
-			return (false);
+			return false;
 		std::memset(&this->stream, 0, sizeof(this->stream));
 		if (inflateInit(&this->stream) != Z_OK)
-			return (false);
+			return false;
 		this->file = file;
 		this->opened = true;
 		this->openedFile = true;
-		return (true);
+		return true;
 	}
 
 	void FileInputStream::close()
@@ -65,15 +65,15 @@ namespace gz
 	ssize_t FileInputStream::readBytes(void *data, size_t len)
 	{
 		if (!this->opened || !this->file)
-			return (-1);
-		return (std::fread(data, 1, len, this->file));
+			return -1;
+		return std::fread(data, 1, len, this->file);
 	}
 
 	bool FileInputStream::eof()
 	{
 		if (!this->opened || !this->file)
-			return (true);
-		return (std::feof(this->file));
+			return true;
+		return std::feof(this->file);
 	}
 
 }

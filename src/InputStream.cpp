@@ -32,7 +32,7 @@ namespace gz
 			if (readed <= 0)
 			{
 				if (!eof())
-					return (-1);
+					return -1;
 				if (this->bufferLen == 0)
 					break;
 			}
@@ -45,54 +45,54 @@ namespace gz
 			this->stream.next_out = (Bytef*)data + written;
 			int ret = inflate(&this->stream, Z_NO_FLUSH);
 			if (ret != Z_OK && ret != Z_FINISH && ret != Z_STREAM_END)
-				return (-1);
+				return -1;
 			this->bufferOff = this->bufferLen - this->stream.avail_in;
 			written = len - this->stream.avail_out;
 			this->bufferLen = this->stream.avail_in;
 			if (ret == Z_STREAM_END)
 				break;
 		} while (written < len);
-		return (written);
+		return written;
 	}
 
 	bool InputStream::readInt8(int8_t *val)
 	{
-		return (read(val, 1) == 1);
+		return read(val, 1) == 1;
 	}
 
 	bool InputStream::readUInt8(uint8_t *val)
 	{
-		return (read(val, 1) == 1);
+		return read(val, 1) == 1;
 	}
 
 	bool InputStream::readInt16(int16_t *val)
 	{
-		return (read(val, 2) == 2);
+		return read(val, 2) == 2;
 	}
 
 	bool InputStream::readUInt16(uint16_t *val)
 	{
-		return (read(val, 2) == 2);
+		return read(val, 2) == 2;
 	}
 
 	bool InputStream::readInt32(int32_t *val)
 	{
-		return (read(val, 4) == 4);
+		return read(val, 4) == 4;
 	}
 
 	bool InputStream::readUInt32(uint32_t *val)
 	{
-		return (read(val, 4) == 4);
+		return read(val, 4) == 4;
 	}
 
 	bool InputStream::readInt64(int64_t *val)
 	{
-		return (read(val, 8) == 8);
+		return read(val, 8) == 8;
 	}
 
 	bool InputStream::readUInt64(uint64_t *val)
 	{
-		return (read(val, 8) == 8);
+		return read(val, 8) == 8;
 	}
 
 }

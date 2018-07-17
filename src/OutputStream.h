@@ -18,7 +18,7 @@ namespace gz
 		uint32_t bufferOff;
 		uint32_t bufferLen;
 		z_stream stream;
-		virtual ssize_t writeBytes(const void *data, size_t len) {(void)data;(void)len;return (0);};
+		virtual ssize_t writeBytes(const void *data, size_t len) {(void)data;(void)len;return 0;};
 
 	public:
 		OutputStream();

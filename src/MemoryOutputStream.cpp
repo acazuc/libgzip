@@ -22,7 +22,7 @@ namespace gz
 	{
 		this->data.resize(this->data.size() + len);
 		std::memmove(this->data.data() + this->data.size() - len, data, len);
-		return (len);
+		return len;
 	}
 
 }
