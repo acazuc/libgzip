@@ -2,3 +2,4 @@ libgzip.a
 *.swp
 obj
 *.gch
+test

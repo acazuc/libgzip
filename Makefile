@@ -12,7 +12,7 @@ RANLIB = gcc-ranlib
 
 RANLIBFLAGS =
 
-CLFAGS = -std=c++14 -g -Wall -Wextra -Werror -O3 -pipe
+CLFAGS = -std=c++14 -g -Wall -Wextra -Werror -O3 -pipe -fno-rtti
 
 INCLUDES_PATH = -I src
 INCLUDES_PATH+= -I lib/zlib/include
