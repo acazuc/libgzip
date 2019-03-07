@@ -1,6 +1,8 @@
 NAME = libgzip.a
 
-CC = g++
+CXX = g++
+
+override CXXFLAGS += -std=c++14 -g -Wall -Wextra -Werror -O3 -pipe
 
 ARCH =
 
@@ -11,8 +13,6 @@ ARFLAGS =
 RANLIB = gcc-ranlib
 
 RANLIBFLAGS =
-
-CLFAGS = -std=c++14 -g -Wall -Wextra -Werror -O3 -pipe -fno-rtti
 
 INCLUDES_PATH = -I src
 INCLUDES_PATH+= -I lib/zlib/include
@@ -41,13 +41,13 @@ headers:
 	@find $(SRCS_PATH) -name \*.h -exec $(CC) {} \;
 
 $(NAME): $(OBJS)
-	@echo " - Making $(NAME)"
+	@echo "AR $(NAME)"
 	@$(AR) -rc $(ARFLAGS) $(NAME) $(OBJS)
 	@$(RANLIB) $(RANLIBFLAGS) $(NAME)
 
 $(OBJS_PATH)%.opp: $(SRCS_PATH)%.cpp
-	@echo " - Compiling $<"
-	@$(CC) $(ARCH) $(CFLAGS) -o $@ -c $< $(INCLUDES_PATH)
+	@echo "CXX $<"
+	@$(CXX) $(ARCH) $(CXXFLAGS) -o $@ -c $< $(INCLUDES_PATH)
 
 odir:
 	@mkdir -p $(OBJS_PATH)

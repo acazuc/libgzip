@@ -20,7 +20,7 @@ namespace gz
 
 	ssize_t OutputStream::write(const void *data, size_t len)
 	{
-		ssize_t written = 0;
+		size_t written = 0;
 		do
 		{
 			this->stream.avail_in = len - written;
@@ -31,7 +31,7 @@ namespace gz
 			if (ret != Z_OK && ret != Z_FINISH)
 				return -1;
 			this->bufferLen = this->buffer.size() - this->stream.avail_out;
-			if (writeBytes(this->buffer.data(), this->bufferLen) != this->bufferLen)
+			if (writeBytes(this->buffer.data(), this->bufferLen) != (ssize_t)this->bufferLen)
 				return -1;
 			written = len - this->stream.avail_in;
 		} while (written != len);
@@ -43,14 +43,14 @@ namespace gz
 begin:
 		this->stream.avail_in = 0;
 		this->stream.next_in = (Bytef*)0;
-		this->stream.avail_out = CHUNK;
+		this->stream.avail_out = this->buffer.size();
 		this->stream.next_out = this->buffer.data();
 		int ret = deflate(&this->stream, Z_FINISH);
-		if (ret != Z_STREAM_END)
+		if (ret != Z_OK && ret != Z_BUF_ERROR && ret != Z_STREAM_END)
 			return false;
 		this->bufferLen = this->buffer.size() - this->stream.avail_out;
 		ssize_t tmp = writeBytes(this->buffer.data(), this->bufferLen);
-		if (tmp != this->bufferLen)
+		if (tmp != (ssize_t)this->bufferLen)
 			return false;
 		if (ret == Z_STREAM_END)
 			return true;

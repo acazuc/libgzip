@@ -13,9 +13,9 @@ namespace gz
 	{
 
 	private:
+		FILE *file;
 		bool openedFile;
 		bool opened;
-		FILE *file;
 		ssize_t writeBytes(const void *data, size_t len);
 
 	public:

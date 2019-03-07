@@ -63,7 +63,7 @@ namespace gz
 				if (ret != Z_OK && ret != Z_FINISH)
 					break;
 				this->bufferLen = this->buffer.size() - this->stream.avail_out;
-				if (writeBytes(this->buffer.data(), this->bufferLen) != this->bufferLen)
+				if (writeBytes(this->buffer.data(), this->bufferLen) != (ssize_t)this->bufferLen)
 					break;
 				if (ret == Z_FINISH)
 					break;
