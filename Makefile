@@ -2,15 +2,13 @@ NAME = libgzip.a
 
 CXX = g++
 
-override CXXFLAGS += -std=c++14 -g -Wall -Wextra -Werror -O3 -pipe
+override CXXFLAGS += -std=c++14 -g -Wall -Wextra -O3 -pipe
 
-ARCH =
+AR = ar
 
-AR = gcc-ar
+ARFLAGS = rc
 
-ARFLAGS =
-
-RANLIB = gcc-ranlib
+RANLIB = ranlib
 
 RANLIBFLAGS =
 
@@ -36,30 +34,23 @@ OBJS = $(addprefix $(OBJS_PATH), $(OBJS_NAME))
 
 all: odir $(NAME)
 
-headers:
-	@find $(SRCS_PATH) -name \*.gch -exec rm {} \;
-	@find $(SRCS_PATH) -name \*.h -exec $(CC) {} \;
-
 $(NAME): $(OBJS)
 	@echo "AR $(NAME)"
-	@$(AR) -rc $(ARFLAGS) $(NAME) $(OBJS)
+	@$(AR) $(ARFLAGS) $(NAME) $(OBJS)
+	@echo "RANLIB $(NAME)"
 	@$(RANLIB) $(RANLIBFLAGS) $(NAME)
 
 $(OBJS_PATH)%.opp: $(SRCS_PATH)%.cpp
 	@echo "CXX $<"
-	@$(CXX) $(ARCH) $(CXXFLAGS) -o $@ -c $< $(INCLUDES_PATH)
+	@$(CXX) $(CXXFLAGS) -o $@ -c $< $(INCLUDES_PATH)
 
 odir:
 	@mkdir -p $(OBJS_PATH)
 
 clean:
-	@echo " - Cleaning objs"
 	@rm -f $(OBJS)
-
-fclean: clean
-	@echo " - Cleaning lib"
 	@rm -f $(NAME)
 
-re: fclean all
+re: clean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean re odir
